@@ -58,12 +58,12 @@ app.use(
       }),
     })
   )
-
+app.use(passport.initialize())
+app.use(passport.session())
  app.use('/users',usersRouter)
 
 
-app.use(passport.initialize())
-app.use(passport.session())
+
 const PORT =8080;
 
 

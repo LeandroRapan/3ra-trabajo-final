@@ -1,13 +1,22 @@
-import passport from "passport";
 
+import UserDao from "../00-daos/mongodb/user.dao.js";
+
+const userDao=new UserDao()
 export function isAdmin(req,res,next){
+    // console.log(req.isAuthenticated());
+    
+
     if(req.isAuthenticated() && req.user.role === 'admin'){
         return next();
     }
     res.status(403).send('acceso denegado')
 }
-export function isUser(req,res,next){
-    if (req.isAuthenticated() && req.user.role ==='user'){
+export async function isUser(req,res,next){
+    console.log("req session de mdle" ,req.session)
+    const user = await userDao.getByid(req.session.passport.user)
+    req.user=user
+    console.log("reqUser de middle",req.user)
+    if ( req.user.role =='user'){
         return next()
     }
     res.status(403).send("acceso denegado... vos como admin que haces aca? loco")

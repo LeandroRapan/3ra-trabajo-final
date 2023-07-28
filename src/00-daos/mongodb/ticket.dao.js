@@ -4,3 +4,4 @@ import { productsModel } from "./models/products.model"
 // luego tengo que armar un nuevo carrito solo con los articulos que no estaban en screenTop
 // finalmente tengo que hacer un objeto ticket donde figurren esos articulos
 // podria poner un dto que sirva para generar el producto
+

@@ -42,11 +42,11 @@ passport.use('login', logStrat)
 
 
 
-passport.serializeUser((user,done)=>{
+passport.serializeUser(async (user,done)=>{
     done(null, user._id);
 });
 passport.deserializeUser(async(id,done)=>{
-    let user =await userDao.getByidById(id);
+    let user =await userDao.getByid(id);
     done(null, user)
 
 })

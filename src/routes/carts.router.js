@@ -9,6 +9,7 @@ import {
     addProductToCartController
 } from '../02-controllers/carts.controllers.js'
 import { isUser } from "../middlewares/authVerification.js";
+import passport from "passport";
 
 const router = Router();
 
@@ -19,8 +20,9 @@ router.post('/', createCartController);
 router.delete ('/:cid/products/:pid', cartdeleteOneController)
 router.put('/:id', updateCartController);
 
-router.put('/:cid/products/:pid', isUser,updateProductQuantityController);
+router.put('/:cid/products/:pid',passport.authenticate, isUser,updateProductQuantityController);
 // router.delete('/:id')
 
-router.post('/:cid/:pid', isUser, addProductToCartController)
+router.post('/:cid/:pid', isUser, addProductToCartController);
+router.post('/:cid/purchase')
 export default router

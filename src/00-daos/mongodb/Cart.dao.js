@@ -89,6 +89,36 @@ export default class CartDao {
         }
       }
 
+      async generateTkt(cid, pid) {
+        try {
+          const prod = await productsModel.findById(pid);
+          const cart = await cartModel.findById(cid);
+      
+          if (!prod || !cart) {
+            throw new Error('Producto o carrito no encontrado.');
+          }
+      
+          if (prod.quantity >= 1) {
+            prod.quantity -= 1;
+            await prod.save();
+      
+            cart.products.pull(pid);
+            await cart.save();
+      
+            return tkt; // Código similar al ejemplo anterior para generar el ticket
+          } else {
+            throw new Error('No hay suficiente stock disponible para generar el ticket de compra.');
+          }
+        } catch (error) {
+          console.log('Error al generar el ticket de compra:', error);
+          throw error;
+        }
+      }
+    
+           
+
+       
+
 
 
 
