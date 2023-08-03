@@ -8,9 +8,9 @@ import {
     updateProductQuantityController,
     addProductToCartController
 } from '../02-controllers/carts.controllers.js'
-import { isUser } from "../middlewares/authVerification.js";
-import passport from "passport";
 
+import passport from "passport";
+import { isUser } from "../middlewares/authVerification.js";
 const router = Router();
 
 // router.get('/', getCartsController);

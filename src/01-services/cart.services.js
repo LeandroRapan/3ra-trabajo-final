@@ -1,6 +1,8 @@
 import CartDao from "../00-daos/mongodb/Cart.dao.js";
+import ProductsDaoMongoDB from "../00-daos/mongodb/products.dao.js";
 
 const cDao = new CartDao();
+const prodDao = new ProductsDaoMongoDB();
     
 
 export const  getCartsService  = async ()=>{
@@ -56,7 +58,7 @@ export const  updateProductQuantityService = async (cid, pid, quantity)=>{
 export const addProductToCartService = async (cartId, prodId)=>{
     try {
         const prodExist = await prodDao.getProductById(prodId);
-        const prodToCart = await prodDao.addProductToCart(cartId, prodId)
+        const prodToCart = await cDao.addProductToCart(cartId, prodId)
         if (!prodExist) {throw new Error('producto no encontrado')}
         else{
             return prodToCart

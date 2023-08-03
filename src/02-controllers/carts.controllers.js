@@ -1,4 +1,4 @@
-import { getCartsService, getCartByIdServide, createCartService, updateCartService, cartDeleteOneService, updateProductQuantityService } from "../01-services/cart.services.js";
+import { getCartsService, getCartByIdServide, createCartService, updateCartService, cartDeleteOneService, updateProductQuantityService, addProductToCartService } from "../01-services/cart.services.js";
 
 
 export const getCartsController= async(req,res, next)=>{

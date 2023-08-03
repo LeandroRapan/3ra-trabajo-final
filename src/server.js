@@ -36,9 +36,7 @@ app.engine('handlebars', handlebars.engine());
 app.set('view engine', 'handlebars');
 app.set('views', __dirname+'/views');
 
-app.use('/products', productsRouter)
-app.use('/chat', viewsRouter);
-app.use('/cart', cartsRouter)
+
 app.use(
     session({
       secret: 'sessionKey',
@@ -61,6 +59,9 @@ app.use(
 app.use(passport.initialize())
 app.use(passport.session())
  app.use('/users',usersRouter)
+ app.use('/products', productsRouter)
+app.use('/chat', viewsRouter);
+app.use('/cart', cartsRouter)
 
 
 
