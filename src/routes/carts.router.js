@@ -1,15 +1,17 @@
 import { Router } from "express";
+import passport from "passport";
 import {
-    getCartsController,
+    
     getCartByIdController,
     createCartController,
     updateCartController,
     cartdeleteOneController,
     updateProductQuantityController,
-    addProductToCartController
+    addProductToCartController,
+    generateTktController
 } from '../02-controllers/carts.controllers.js'
 
-import passport from "passport";
+
 import { isUser } from "../middlewares/authVerification.js";
 const router = Router();
 
@@ -20,9 +22,9 @@ router.post('/', createCartController);
 router.delete ('/:cid/products/:pid', cartdeleteOneController)
 router.put('/:id', updateCartController);
 
-router.put('/:cid/products/:pid',passport.authenticate, isUser,updateProductQuantityController);
+router.put('/:cid/products/:pid', isUser,updateProductQuantityController);
 // router.delete('/:id')
 
-router.post('/:cid/:pid', isUser, addProductToCartController);
-router.post('/:cid/purchase')
+router.post('/:cid/products/:pid', isUser, addProductToCartController);
+router.post('/:cid/purchase', generateTktController)
 export default router

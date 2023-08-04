@@ -68,3 +68,11 @@ export const addProductToCartService = async (cartId, prodId)=>{
     }
 
 }
+export const generateTktService = async(cartId)=>{
+    try {
+        const tkt = await cDao.generateTkt(cartId);
+        return tkt
+    } catch (error) {
+        console.log(error)
+    }
+}

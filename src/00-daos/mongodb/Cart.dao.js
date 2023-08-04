@@ -89,26 +89,49 @@ export default class CartDao {
         }
       }
 
-      async generateTkt(cid, pid) {
+      async generateTkt(cid) {
         try {
-          const prod = await productsModel.findById(pid);
+          // const prod = await productsModel.findById(pid);
+          console.log('cartDao cid :::::' +cid)
           const cart = await cartModel.findById(cid);
-      
-          if (!prod || !cart) {
+          if ( !cart) {
             throw new Error('Producto o carrito no encontrado.');
           }
-      
+          
+          
+          const prodInCart = cart.products;
+          const tktProductIds=[];
+          let totalPrice = 0
+
+         for (const pid of prodInCart){
+          const prod = await productsModel.findById(pid)
+           if (!prod ) {
+            throw new Error(`Producto o carrito no encontrado.n°:${pid}`);
+          }
+          console.log('prod:::::' + prod)
+          console.log('prodQuantity::::'+ prod.quantity)
           if (prod.quantity >= 1) {
             prod.quantity -= 1;
             await prod.save();
+            tktProductIds.push(pid);
+        totalPrice += prod.price;
+         }else {
+            throw new Error('No hay suficiente stock disponible para generar el ticket de compra.');
+          }
+          console.log('cart.products::::' + prod)
+      
+         
       
             cart.products.pull(pid);
             await cart.save();
+            const tkt = {
+              productIds: tktProductIds,
+              cantidad: tktProductIds.length, 
+              precioTotal: totalPrice,
+            }
       
-            return tkt; // Código similar al ejemplo anterior para generar el ticket
-          } else {
-            throw new Error('No hay suficiente stock disponible para generar el ticket de compra.');
-          }
+            return tkt; 
+          } 
         } catch (error) {
           console.log('Error al generar el ticket de compra:', error);
           throw error;

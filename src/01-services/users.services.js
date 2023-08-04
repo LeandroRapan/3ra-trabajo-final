@@ -21,7 +21,7 @@ export const userLoginService = async (email, password) =>{
     
    try {
      const userlog = await userDao.loginUser(email, password);
-     console.log(userlog)
+     
     if(userlog) {
         
         // res.redirect('/views/profile');

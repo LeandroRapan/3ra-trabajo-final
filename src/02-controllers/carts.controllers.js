@@ -1,4 +1,4 @@
-import { getCartsService, getCartByIdServide, createCartService, updateCartService, cartDeleteOneService, updateProductQuantityService, addProductToCartService } from "../01-services/cart.services.js";
+import { getCartsService, getCartByIdServide, createCartService, updateCartService, cartDeleteOneService, updateProductQuantityService, addProductToCartService, generateTktService } from "../01-services/cart.services.js";
 
 
 export const getCartsController= async(req,res, next)=>{
@@ -67,7 +67,7 @@ export const updateProductQuantityController = async(req, res, next)=>{
 }
 export const addProductToCartController = async (req, res, next) =>{
     try {
-        console.log('inicio proceso controller')
+        
         
         const { cid }= req.params;
         const { pid }= req.params
@@ -75,5 +75,15 @@ export const addProductToCartController = async (req, res, next) =>{
         res.json(addProd)
     } catch (error) {
         
+    }
+}
+export const generateTktController = async(req, res, next)=>{
+    try{
+        const {cid}= req.params;
+        const tkt = await generateTktService(cid);
+        res.json(tkt)
+
+    }catch(error){
+        console.log(error)
     }
 }

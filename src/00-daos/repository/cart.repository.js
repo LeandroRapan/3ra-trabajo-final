@@ -33,4 +33,9 @@ export default class cartRepository {
         let cart = this.dao.addProductToCart(cartId, prodId);
         return cart
     }
+     generateTkt = async(cartId)=>{
+        let cart = this.dao.generateTkt(cartId);
+        return cart
+     }
+    
 }

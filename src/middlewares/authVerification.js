@@ -23,5 +23,5 @@ export async function isUser(req,res,next){
      }
      res.status(403).send("acceso denegado... vos como admin que haces aca? loco")
 
-    console.log('req.session.passport.user' + req.session.passport.user )
+    // console.log('req.session.passport.user' + req.session.passport.user )
 }

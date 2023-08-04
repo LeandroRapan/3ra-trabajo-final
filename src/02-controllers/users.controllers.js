@@ -20,10 +20,11 @@ export const userRegisterController = async (req, res) => {
         
     
         const user = await userDao.getByid(req.session.passport.user);
+          
         
         const {first_name,last_name, email, age, role}= user;
         req.user= user
-        console.log("requsercontroller:::" ,req.user)
+        
         res.json({
             msg:'Login correcto',
             session: req.session,
