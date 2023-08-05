@@ -1,1 +1,8 @@
 MONGO_URL= 'mongodb+srv://admin:lea@cluster0.h3rrqya.mongodb.net/primerMongo?retryWrites=true&w=majority'
+
+HOST= smtp.ethereal.email
+EMAIL=jillian68@ethereal.email
+PORT_ETHEREAL=587
+NAME=Jillian Dibbert
+PASS=8T4QY18s5S2XGBtVYX
+  
