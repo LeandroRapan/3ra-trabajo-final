@@ -19,6 +19,8 @@ import './config/passport.config.js';
 import './config/passport.github.js';
 import dotenv from 'dotenv';
 import { isUser } from './middlewares/authVerification.js';
+import emailRouter from './routes/email.router.js'
+
 dotenv.config()
 
 
@@ -61,7 +63,10 @@ app.use(passport.session())
  app.use('/users',usersRouter)
  app.use('/products', productsRouter)
 app.use('/chat', viewsRouter);
-app.use('/cart', cartsRouter)
+app.use('/cart', cartsRouter);
+
+app.use('/api', emailRouter);
+
 
 
 

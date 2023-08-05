@@ -25,6 +25,7 @@ export const userLoginService = async (email, password) =>{
     if(userlog) {
         
         // res.redirect('/views/profile');
+        console.log('console del user al logear:::: '+userlog)
         return userlog
     } else {
         // res.redirect('/views/error-login');
