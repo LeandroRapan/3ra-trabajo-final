@@ -2,6 +2,8 @@
 import factory from "../00-daos/factory.js"
 const { productManager }= factory;
 import productRepository from "../00-daos/repository/products.repository.js";
+import { generateProducts } from "../test/products.faker.js";
+import { productsModel } from "../00-daos/mongodb/models/products.model.js";
 const prodDao= new productRepository();
 
 // import ProductsDaoFs from "../daos/filesystem/products.dao.js"
@@ -58,6 +60,15 @@ export const deleteService = async (id)=>{
         console.log(error)
     }
 
+}
+export const createProductMock =async (quantity=50)=>{
+    const productArray=[];
+    for (i=0;i<quantity;i++ ){
+        const product = generateProducts();
+        productArray.push(product)
+    };
+    const productsmok = await productsModel.create(productArray)
+    return productsmok
 }
 
 // export const agregationProductsService = async(page,limit)=>{

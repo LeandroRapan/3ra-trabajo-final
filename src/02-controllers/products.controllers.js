@@ -4,6 +4,7 @@ import {
     createService,
     updateService,
     deleteService,
+    createProductMock,
     // agregationProductsService,
     
 } from "../01-services/products.services.js"
@@ -48,12 +49,12 @@ export const getProductByIdController= async (req, res, next) =>{
 }
 export const createProductController= async (req, res, next) =>{
     try {
-        const { name, description, price, stock } = req.body
+        const { name, description, price, quantity } = req.body
         const newProduct = await createService({
             name,
             description, 
             price,
-            stock
+            quantity
         });
         res.json(newProduct)
 
@@ -86,6 +87,15 @@ export const deleteProductController = async (req, res, next) =>{
     }
 }
 
+export const createProductMockController = async (req,res) =>{
+   const {quantity}=req.query
+    try {
+        const response = await createProductMock(quantity);
+        res.status(280).json({users:response})
+    } catch (error) {
+        console.log(error)
+    }
+}
 // export const agregtionProductsController = async (req, res, next) =>{
 //     try {
 //         const {page, limit}= req.query

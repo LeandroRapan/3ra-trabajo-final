@@ -5,6 +5,7 @@ import {
     createProductController,
     deleteProductController, 
     updateProductController,
+    createProductMockController,
     // agregtionProductsController,
    
 } from '../02-controllers/products.controllers.js'
@@ -17,6 +18,7 @@ router.get('/:id', getProductByIdController);
 router.post('/', isAdmin, createProductController);
 router.put('/:id',isAdmin, updateProductController);
 router.delete('/:id', isAdmin,deleteProductController);
+router.post('/mockingproducts', createProductMockController)
 
 
 
