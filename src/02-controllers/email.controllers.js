@@ -10,3 +10,20 @@ export const sendMailEthereal = async( req,res)=>{
         
     }
 }
+
+export const sendGmail = async(req,res)=>{
+    try {
+        const {dest, name} = req.body;
+        const gmailOptions ={
+            from:process.env.EMAIL,
+            to: dest,
+            subject: 'bienvenido/a',
+            html: `<h1>hola ${name} te damos la bienvenida `
+        }
+        const response = await Transportter.sendMail(gmailOptions);
+        console.log('email enviado')
+        res.json(response)
+    } catch (error) {
+        console.log(error)
+    }
+}

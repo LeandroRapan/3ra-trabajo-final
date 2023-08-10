@@ -4,8 +4,10 @@ import { templateHTML } from "./newMessage.js";
 dontenv.config()
 
 export const Transportter = createTransport({
+    service: 'gmail',
     host: process.env.HOST,
-    port: process.env.PORT_ETHEREAL,
+    port: 465,
+    secure:true,
     auth:{
         user: process.env.EMAIL,
         pass: process.env.PASS
