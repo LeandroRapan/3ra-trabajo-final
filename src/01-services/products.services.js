@@ -63,11 +63,14 @@ export const deleteService = async (id)=>{
 }
 export const createProductMock =async (quantity=50)=>{
     const productArray=[];
-    for (i=0;i<quantity;i++ ){
+    for (let i=0;i<quantity;i++ ){
         const product = generateProducts();
         productArray.push(product)
     };
+    console.log('antes del productsModelservice:::::::::::::::')
     const productsmok = await productsModel.create(productArray)
+    console.log('despues del productsModelservice:::::::::::::::')
+
     return productsmok
 }
 

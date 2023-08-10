@@ -91,7 +91,7 @@ export const createProductMockController = async (req,res) =>{
    const {quantity}=req.query
     try {
         const response = await createProductMock(quantity);
-        res.status(280).json({users:response})
+        res.status(280).json({products:response})
     } catch (error) {
         console.log(error)
     }
