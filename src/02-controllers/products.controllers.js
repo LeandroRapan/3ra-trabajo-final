@@ -8,7 +8,8 @@ import {
     // agregationProductsService,
     
 } from "../01-services/products.services.js"
-
+import { HttpResponse } from "../utils/http.response.js"
+const httpResponse = new HttpResponse()
 export const getAllProductsController = async (req, res, next) =>{
     try {
         const {page, limit, query, sort} = req.query
@@ -87,13 +88,13 @@ export const deleteProductController = async (req, res, next) =>{
     }
 }
 
-export const createProductMockController = async (req,res) =>{
+export const createProductMockController = async (req,res,next) =>{
    const {quantity}=req.query
     try {
         const response = await createProductMock(quantity);
-        res.status(280).json({products:response})
+        return httpResponse.Ok(res, response)
     } catch (error) {
-        console.log(error)
+        next(error)
     }
 }
 // export const agregtionProductsController = async (req, res, next) =>{

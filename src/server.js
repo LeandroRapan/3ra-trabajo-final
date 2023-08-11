@@ -30,7 +30,7 @@ const app = express();
 app.use(cookieParser())
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
-app.use(errorHandler);
+
 app.use(morgan('el servidor escucha el puerto 8080'));
 app.use(express.static(__dirname + '/public'))
 
@@ -69,7 +69,7 @@ app.use('/api', emailRouter);
 
 
 
-
+app.use(errorHandler);
 const PORT =8080;
 
 
