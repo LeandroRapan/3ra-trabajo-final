@@ -15,8 +15,12 @@ export default class productRepository{
     return prod
 }
     createProduct = async(obj)=> {
-        let prod = this.dao.createProduct(obj);
+        try {
+            let prod = this.dao.createProduct(obj);
         return prod
+        } catch (error) {
+            throw new Error(error.message)
+        }
     }
     updateProduct = async(id,obj)=>{
         let prod= this.dao.updateProduct(id,obj)

@@ -51,12 +51,14 @@ export const getProductByIdController= async (req, res, next) =>{
 export const createProductController= async (req, res, next) =>{
     try {
         const { name, description, price, quantity } = req.body
+        if(name==undefined || description==undefined ||price==undefined || quantity ==undefined){throw new Error('los datos estan incompletos')}
         const newProduct = await createService({
             name,
             description, 
             price,
             quantity
         });
+        console.log('::::::controller')
         res.json(newProduct)
 
     } catch (error) {

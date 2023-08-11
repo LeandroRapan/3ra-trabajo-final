@@ -32,10 +32,12 @@ export const getByIdService = async (id)=>{
 export const createService = async (obj)=>{
     try {
         const newProd = await prodDao.createProduct(obj);
+        console.log(':::::::createservice')
         if(!newProd) throw new Error('error de validacion')
+        
         else return newProd
     } catch (error) {
-        console.log(error)
+        throw new Error (error.messagge)
     }
 }
 export const updateService = async (id, obj)=>{
