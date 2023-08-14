@@ -20,6 +20,7 @@ import './config/passport.github.js';
 import dotenv from 'dotenv';
 import { isUser } from './middlewares/authVerification.js';
 import emailRouter from './routes/email.router.js'
+import { logger } from './utils/logger.js';
 
 dotenv.config()
 
@@ -67,35 +68,38 @@ app.use('/cart', cartsRouter);
 
 app.use('/api', emailRouter);
 
-
+app.get("/error", (req,res)=>{
+  logger.error("error en el endpoint de prueba");
+  res.send("probando logger")
+})
 
 app.use(errorHandler);
 const PORT =8080;
 
 
-const httpServer =app.listen(PORT, ()=>console.log("conectado a puerto 8080"))
+const httpServer =app.listen(PORT, ()=>logger.info("conectado a puerto 8080"))
 
 
 
  const socketServer = new Server(httpServer);
 
 socketServer.on('connection', async(socket)=>{
-    console.log('¡🟢 New connection!', socket.id);
+    logger.info('¡🟢 New connection!', socket.id);
 
    
      socketServer.emit('messages', await allMsgController());
 
      socket.on('disconnect', ()=>{
-         console.log('¡🔴 User disconnect!');
+         logger.silly('¡🔴 User disconnect!');
      });
 
      socket.on('newUser', (user)=>{
-         console.log(`${user} is logged in`);
+         logger.silly(`${user} is logged in`);
      });
 
     socket.on('chat:message',isUser, async(msg)=>{
         
-        console.log(msg)
+        logger.silly(msg)
          await createMsgService(msg);
         socketServer.emit('messages', await allMsgService());
      });
