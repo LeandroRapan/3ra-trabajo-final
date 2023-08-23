@@ -4,7 +4,7 @@ export default class ProductsDaoMongoDB {
  
     async getAllProducts(query,page= 1, limit =10, sort=1) {
         try {
-          console.log('aca esta el dao de mongo andando')
+          
           const sortMode ={
             price: sort
           }
@@ -13,7 +13,7 @@ export default class ProductsDaoMongoDB {
           return response;
           
         } catch (error) {
-          console.log(error);
+          throw new Error(error.message);
         }
       }
     
@@ -22,7 +22,7 @@ export default class ProductsDaoMongoDB {
           const response = await productsModel.findById(id);
           return response;
         } catch (error) {
-          console.log(error);
+          throw new Error(error.message);
         }
       }
     
@@ -38,9 +38,10 @@ export default class ProductsDaoMongoDB {
       async updateProduct(id, obj) {
         try {
           await productsModel.findByIdAndUpdate({_id: id}, obj);
-          return obj;
+          
+          return await productsModel.findById(id)
         } catch (error) {
-          console.log(error);
+          throw new Error(error.message);
         }
       }
     
@@ -49,7 +50,7 @@ export default class ProductsDaoMongoDB {
           const response = await productsModel.findByIdAndDelete(id);
           return response;
         } catch (error) {
-          console.log(error);
+          throw new Error(error.message);
         }
       }
 

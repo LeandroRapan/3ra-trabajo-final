@@ -51,7 +51,7 @@ export const updateService = async (id, obj)=>{
         }
 
     } catch (error) {
-        console.log(error)
+        throw new Error(error.message)
     }
 }
 export const deleteService = async (id)=>{
@@ -59,7 +59,7 @@ export const deleteService = async (id)=>{
         const prodDel = await prodDao.deleteProduct(id)
         return prodDel
     } catch (error) {
-        console.log(error)
+        throw new Error(error.message)
     }
 
 }

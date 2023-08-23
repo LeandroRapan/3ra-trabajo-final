@@ -1,4 +1,5 @@
 import factory from "../factory.js";
+import productResDto from "../../utils/product.res.dto.js";
 const {productsManager} = factory;
 
 export default class productRepository{
@@ -7,6 +8,10 @@ export default class productRepository{
     }
     getAllProducts = async ()=>{
     let prod = await this.dao.getAllProducts()
+    
+    
+    // let prodDto = prod.docs.map((obj) =>new productResDto(obj)) 
+    // return prodDto
     return prod
 }
     getProductById= async(id)=>{
