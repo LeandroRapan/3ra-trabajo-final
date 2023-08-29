@@ -21,13 +21,15 @@ import dotenv from 'dotenv';
 import { isUser } from './middlewares/authVerification.js';
 import emailRouter from './routes/email.router.js'
 import { logger } from './utils/logger.js';
-
+import swaggerJSDoc from 'swagger-jsdoc';
+import swaggerUI from 'swagger-ui-express'
+import { info } from './docs/info.js';
 dotenv.config()
 
-
-
-
 const app = express();
+
+
+
 app.use(cookieParser())
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
@@ -67,6 +69,9 @@ app.use('/chat', viewsRouter);
 app.use('/cart', cartsRouter);
 
 app.use('/api', emailRouter);
+
+const specs = swaggerJSDoc(info);
+app.use('/docs', swaggerUI.serve, swaggerUI.setup(specs))
 
 app.get("/error", (req,res)=>{
   logger.error("error en el endpoint de prueba");

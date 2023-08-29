@@ -1,0 +1,42 @@
+components:
+  parameters:
+    schemas:
+      NewOrUpdateProduct:
+        type: object
+        required:
+          - name
+          - description
+          - price
+          - quantity
+          - owner
+        properties:
+          name:
+            type: string
+            description: nombre del producto
+          description: 
+            type: string
+            description: descripcion del producto
+          price:
+            type: number
+            description: precio del producto
+          quantity:
+            type: number
+            description: stock del producto
+          Owner:
+            type: string
+            description: id del propietario del producto
+        example:
+          title: cigarrillos pirulo
+          description: los exquicitos y arrogantes cigarrillos marca pirulo
+          price: 300
+          quantity: 30
+          owner: 9u309923u093u09u  
+      Cart:
+        type: object
+        required:
+          - products
+        properties:
+          products:
+            type: array
+        example:
+          products: [e837492738047329, u30940293u4]

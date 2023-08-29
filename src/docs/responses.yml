@@ -1,0 +1,83 @@
+components:
+  schema:
+    products:
+      GetAllProducts:
+        type: object
+        properties:
+          payload: 
+            type: array
+            description: contiene todos los productos
+            items:
+               type: object
+               properties:
+                  nombre:
+                   type: string
+                   description: nombre del producto
+                   example: cigarrillos pirulo
+                  precio:
+                   type: number
+                   description: el precio del producto
+                   example: 200
+                  stock: 
+                    type: number
+                    description: stock
+                    example: 40
+          info: 
+            type: object
+            description: numero de paginas y link a las mismas
+            properties:
+              pages:
+                type: number
+                desciption: numero de paginas
+                example: 7
+              nextLink:
+                type: string
+                description: link a la proxima pagina
+                example: http://localhost:8080/products?page=2
+              prevLink:
+                type: string
+                description: pagina previa
+                example: null
+      Product:
+        type: object
+        properties:
+          nombre:
+            type: string
+            description: nombre del producto           
+          precio:
+            type: number
+            description: precio
+          stock:
+            type: number
+            description: stock 
+        example:
+          nombre: cigarrillos pirulo
+          precio: 300
+          stock: 56
+      ErrorGetById:
+        type: object
+        properties: 
+          message:
+            type: string
+            descripton: mensaje de error producto no encontrado
+          example: 
+            message: producto no encontrado
+    carts:
+      Cart:
+        type: object
+        properties:
+          products:
+            type: array
+            description: array preparado para carritos
+          _id: id de mongo
+          createdAt: fecha de creacion
+          updatedAt: fecha de actualizacion
+          _v: ni idea que es eso, pero esta en cero
+        example:
+          products: []
+          _id: 567857639
+          cratedAt: 2023-08-29T16:10:40.724Z
+          updatedat: 2023-08-29T16:10:40.724Z
+
+
+        

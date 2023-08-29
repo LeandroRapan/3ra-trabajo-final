@@ -1,0 +1,251 @@
+paths:
+  /products:
+    post:
+      tags:
+        - productos
+      summary: creacion de un nuevo producto en la base de datos
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/parameters/schemas/NewOrUpdateProduct'
+        required: true
+      responses:
+        '200':
+          description: se registro el producto correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/products/Product'
+        '500':
+          description: error del servidor
+    get:
+      summary: obtiene todos los productos
+      tags:
+        - productos
+      responses:
+        '200':
+          description: se obtuvieron los productos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/products/GetAllProducts'
+        '500':
+          description: error del servidor.
+  /products/{id}:
+    get:
+      summary: obtiene el producto buscado con su id
+      tags: 
+        - productos
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: id del producto
+          schema:
+            type: string
+      responses:
+        '200':
+          description: producto encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/products/Product'
+        '404':
+          description: producto no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/products/ErrorGetById'
+        '500':
+          description: error del servidor.
+    put:
+      tags:
+        - productos
+      summary: actualizacion de productos con el id
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: id del producto
+          schema:
+            type: string
+      responses:
+        '200':
+          description: actualizacion del producto
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/products/Product'
+        '404':
+          description: producto no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/products/ErrorGetById'
+        '500':
+          description: error del servidors
+    delete:
+      tags:
+        - productos
+      summary: borra el producto
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: id del producto
+          schema:
+          type: string
+      responses:
+        '200':
+          description: producto borrado con exito
+        '404':
+          description: producto no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/products/ErrorGetById'
+        '500':
+          description: error del servidors
+  /cart:
+    post:
+      tags:
+        - carrito
+      summary: creacion del carrito
+      responses:
+        '200':
+          description: carrito creado
+          content:
+            application/json:
+              $ref: '#/components/schema/carts/Cart'
+        '500':
+          description: error de servidor
+  /cart/{id}:
+    get:
+      tags:
+        - carrito
+      summary: obtiene el carrito del id correspondiente
+      parameters:
+       - in: path
+         name: id
+         required: true
+         description: id del carro
+         schema:
+         type: string
+      responses:
+        '200':
+          description: carrito encontrado
+          content: 
+            application/json:
+              $ref: '#/components/schema/carts/Cart'
+        '404':
+          description: carrito no encontrado
+        '500':
+          description: error de servidor     
+    put:
+      tags:
+        - carrito
+      summary: actualiza el carrito 
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: id del producto
+          schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            $ref: '#/components/parameters/schemas/Cart'
+  /cart/{cid}/product/{pid}:
+    post:    
+      tags:
+        - carrito
+      summary: agrega productos al carrito
+      security:
+        - passport: []
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          description: id del carrito
+          schema:
+            type: string
+        - in: path
+          name: pid
+          required: true
+          description: id del producto
+          schema:
+            type: string
+      responses:
+        '200':
+          description: producto sumado alcarrito
+          content: 
+            application/json:
+              $ref: '#/components/schema/carts/Cart'  
+        '500':
+          description: error del servidor
+    put: 
+      tags:
+        - carrito
+      summary: actualiza productos al carrito
+      security:
+        - passport: []
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          description: id del carrito
+          schema:
+            type: string
+        - in: path
+          name: pid
+          required: true
+          description: id del producto
+          schema:
+            type: string
+      responses:
+        '200':
+          description: producto actualizado
+          content: 
+            application/json:
+              $ref: '#/components/schema/carts/Cart'  
+        '500':
+          description: error del servidor    
+    delete:
+      tags:
+        - carrito
+      summary: elimina productos al carrito
+      security:
+        - passport: []
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          description: id del carrito
+          schema:
+            type: string
+        - in: path
+          name: pid
+          required: true
+          description: id del producto
+          schema:
+            type: string
+      responses:
+        '200':
+          description: producto eliminado
+          content: 
+            application/json:
+              $ref: '#/components/schema/carts/Cart'  
+        '500':
+          description: error del servidor   
+       
+components:
+  securityScheme:
+    passport:
+      type: apiKey
+      name: authorization
+      in: header
+
+
