@@ -9,7 +9,7 @@ export default class ProductsDaoMongoDB {
             price: sort
           }
           const response = await productsModel.paginate(query?{query}:{}, {page, limit, sort: sortMode});
-          
+         
           return response;
           
         } catch (error) {

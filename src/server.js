@@ -1,4 +1,4 @@
-import './db/database.js';
+ import './db/database.js';
 import express from 'express';
 import morgan from 'morgan';
 import { errorHandler } from './middlewares/errorHandler.js';
