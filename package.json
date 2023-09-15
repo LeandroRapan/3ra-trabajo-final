@@ -6,8 +6,9 @@
   "type": "module",
   "scripts": {
     "start": "node .",
-    "dev": "nodemon .", 
-    "test:chai": "mocha ./src/test/dao.chai.test.js" 
+    "dev": "nodemon .",
+    "test:chai": "mocha ./src/test/dao.chai.test.js",
+    "test:supertest":"mocha ./src/test/supertest.test.js"
   },
   "author": "",
   "license": "ISC",
@@ -35,6 +36,7 @@
     "winston-mongodb": "^5.1.1"
   },
   "devDependencies": {
-    "@faker-js/faker": "^6.2.0"
+    "@faker-js/faker": "^6.2.0",
+    "supertest": "^6.3.3"
   }
 }
