@@ -25,7 +25,15 @@ const usersSchema = new mongoose.Schema({
   role: {
     type: String,
     default: 'user'
+  },
+  documents:[
+    {name: String,
+    reference: String}
+  ],
+  last_connection: {
+    type: Date
   }
-})
+
+});
 
 export const userModel = mongoose.model('Users',usersSchema)

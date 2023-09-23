@@ -34,7 +34,7 @@ app.use(cookieParser())
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
-app.use(morgan('el servidor escucha el puerto 8080'));
+app.use(morgan('dev'));
 app.use(express.static(__dirname + '/public'))
 
 app.engine('handlebars', handlebars.engine());
