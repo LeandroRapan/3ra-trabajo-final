@@ -61,7 +61,8 @@ export const createProductController= async (req, res, next) =>{
             description, 
             price,
             quantity,
-            owner
+            owner,
+            
         });
         let prodDto = new productResDto(newProduct)
         res.json(prodDto)
@@ -76,7 +77,7 @@ export const updateProductController = async (req, res, next) =>{
         const { id } = req.params
         const { name, description, price, stock} = req.body;
         let doc = await  getByIdService(id);
-        console.log(doc);
+        
         isOwner(doc.owner)
         const update = await updateService(
             id,
@@ -94,7 +95,7 @@ export const deleteProductController = async (req, res, next) =>{
         await deleteService(id);
         res.send('producto borrado')
     } catch (error) {
-        
+        next(error)
     }
 }
 
@@ -107,13 +108,3 @@ export const createProductMockController = async (req,res,next) =>{
         next(error)
     }
 }
-// export const agregtionProductsController = async (req, res, next) =>{
-//     try {
-//         const {page, limit}= req.query
-//         const response = await agregationProductsService()
-//         res.json(response)
-//     } catch (error) {
-//         console.log(error)
-        
-//     }
-// }

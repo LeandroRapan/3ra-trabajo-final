@@ -4,14 +4,11 @@ export default class ProductsDaoMongoDB {
  
     async getAllProducts(query,page= 1, limit =10, sort=1) {
         try {
-          
-          const sortMode ={
+            const sortMode ={
             price: sort
-          }
-          const response = await productsModel.paginate(query?{query}:{}, {page, limit, sort: sortMode});
-         
-          return response;
-          
+            }
+            const response = await productsModel.paginate(query?{query}:{}, {page, limit, sort: sortMode});
+            return response;
         } catch (error) {
           throw new Error(error.message);
         }
@@ -54,29 +51,4 @@ export default class ProductsDaoMongoDB {
         }
       }
 
-     
-// async agregationProducts(page=1, limit=10) {
-// try{
-//   const sort = 'des'
-//   const sortDirection = sort==='asc'? 1:-1
-//   const response = await productsModel.aggregate([
-//     {
-//       $match:{}
-//     },
-    
-//     {
-//       $sort:{
-//         price: sortDirection
-//       }
-      
-//     }
-//   ])
-//   await response.paginate({}, {page, limit})
-//   return response;
-// }catch(error){
-//       console.log(error)
-//     }
-
-// }
-}
-
+}     

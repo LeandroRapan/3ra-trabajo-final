@@ -2,6 +2,8 @@
     import { __dirname } from "../utils.js"
     import fs from 'fs'
     import path from "path"
+import { userModel } from "../00-daos/mongodb/models/user.model.js"
+    const userMongo = new userModel()
     const storage = multer.diskStorage({
         destination: function (req, file, cb) {
             const { type }= req.body;
@@ -17,8 +19,7 @@
               } else {
                 return cb(new Error('Tipo de archivo inválido'));
               }
-            console.log('hasta aca llego bien')
-            console.log(uploadPath)
+            
             try {
                
                     fs.mkdirSync(__dirname + uploadPath, { recursive: true });
@@ -33,14 +34,18 @@
         filename: function (req, file, cb) {
             const { document_type} = req.body
         const uniqueSuffix = Date.now() + '-' + file.originalname
-        try {
+        try { 
+          req.document_type = document_type
              if (document_type === 'identificacion'){
             cb(null, 'identificacion'+ path.extname(file.originalname))
+           
 
         }else if (document_type ==='certificado_domicilio'){
             cb(null, 'comprobante de domicilio'+ path.extname(file.originalname))
+          
         }else if (document_type==='estado_cuenta'){
             cb(null, 'comprobante de estado de cuenta'+ path.extname(file.originalname))
+           
         }else cb(null,  uniqueSuffix)
         } catch (error) {
             console.log(error)

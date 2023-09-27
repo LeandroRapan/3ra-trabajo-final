@@ -1,7 +1,16 @@
 import { createHash, isValidPass } from '../../utils.js';
 import { userModel } from './models/user.model.js'
+import { generateUsr } from '../../test/usr.faker.js';
 
 export default class UserDao {
+  async getAllUsers() {
+    try {
+      const getAllUsr = await userModel.find({});
+      return getAllUsr
+    } catch (error) {
+      throw new Error(error.message)
+    }
+  }
   async createUser(user) {
     try {
       const { email, password, first_name, last_name, age } = user;
@@ -10,6 +19,8 @@ export default class UserDao {
         if(email === 'adminCoder@coder.com' && password === 'adminCoder123'){
           return await userModel.create({...user, password:createHash(password), role: 'admin'});
         } else {
+          
+          
           const newUser = await userModel.create({...user, password: createHash(password)});
           return newUser
         }
@@ -17,8 +28,8 @@ export default class UserDao {
         return null;
       }
     } catch (error) {
-      console.log(error)
-      throw new Error(error)
+      
+       throw new Error(error.message)
     }
   }
 
@@ -26,7 +37,7 @@ export default class UserDao {
     try {
        const { email, password } = user;
       const userExist = await this.getByEmail(email);
-      // console.log(user.password)
+      
       
       if(userExist){
       
@@ -38,8 +49,8 @@ export default class UserDao {
         return null
       }
     } catch (error) {
-      console.log(error)
-      throw new Error(error)
+      
+      throw new Error(error.message)
     }
   }
   async getByid (id){
@@ -60,7 +71,38 @@ export default class UserDao {
         return userExist
       }return false
     } catch (error) {
-      throw new Error(error)
+      throw new Error(error.message)
+    }
+  }
+  async deleteInactive(){
+    try {
+      const twoDaysAgo = new Date();
+      twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
+      const users = await userModel.find();
+      const inactiveUsers = users.filter(usr=> usr.last_connection < twoDaysAgo);    
+      const inactiveUserIds = inactiveUsers.map((usr) => usr._id);
+      await userModel.deleteMany({_id: { $in: inactiveUserIds}})
+      return inactiveUsers
+
+    } catch (error) {
+      throw new Error(error.message)
+    }
+  }
+
+  async createUserMockDao(quantity=10){
+    try {
+     const userArray = [];
+     for (let i=0; i < quantity; i++){
+      const usrs = generateUsr();
+      usrs.password =  createHash(usrs.password);
+      userArray.push(usrs)
+     }
+      
+    const usrsMok = await userModel.create(userArray);
+    return usrsMok
+
+    } catch (error) {
+      throw new Error(error.message)
     }
   }
 }

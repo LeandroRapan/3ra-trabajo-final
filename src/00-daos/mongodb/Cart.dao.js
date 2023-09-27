@@ -45,11 +45,11 @@ export default class CartDao {
     async cartDeleteOne (cId, prodId){
         try {
             const cart = await cartModel.findById(cId);
-            console.log(cart)
+            
             if(!cart) throw new Error ('carro que?')
             const prodInCart =  cart.products.findIndex(p => p === prodId)
             cart.products.splice(prodInCart, 1)
-            console.log(cart)
+            
             await cart.save()
             return cart
 

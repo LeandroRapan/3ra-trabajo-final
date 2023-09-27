@@ -1,5 +1,5 @@
 import factory from "../factory.js";
-import productResDto from "../../utils/product.res.dto.js";
+
 const {productsManager} = factory;
 
 export default class productRepository{

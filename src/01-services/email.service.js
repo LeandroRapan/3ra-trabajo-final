@@ -3,7 +3,7 @@ import dontenv from "dotenv";
 import { templateHTML } from "./newMessage.js";
 dontenv.config()
 
-export const Transportter = createTransport({
+export const Transporter = createTransport({
     service: 'gmail',
     host: process.env.HOST,
     port: 465,

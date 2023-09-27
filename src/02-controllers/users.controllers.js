@@ -2,12 +2,23 @@
 import UserDao from "../00-daos/mongodb/user.dao.js"
 import { HttpResponse } from "../utils/http.response.js";
 import passport from "passport";
-import fs from 'fs'
-import path from 'path'
-import { __dirname } from "../utils.js";
+
+import userResDto from "../utils/user.res.dto.js";
+import { mailDeletedUsers } from "../utils/Mailer/Mailer.js";
 const userDao = new UserDao();
 const httpResponse = new HttpResponse()
 
+export const getAllUsersController = async (req, res, next) =>{
+    try {
+        const allUsers = await userDao.getAllUsers();
+      
+        const dtoed = allUsers.map(usr => new userResDto(usr))
+        
+        return httpResponse.Ok(res, dtoed)
+    } catch (error) {
+        next(error)
+    }
+}
 
 export const userRegisterController = async (req, res) => {
     try {      
@@ -17,7 +28,7 @@ export const userRegisterController = async (req, res) => {
           })
       
     } catch (error) {
-      console.log(error);
+     next(error)
     }
   }
 
@@ -43,7 +54,7 @@ export const userRegisterController = async (req, res) => {
             role
         }        })
     } catch (error) {
-      console.log(error);
+      next(error);
     }
 }
 export const logoutController = async (req, res, next)=>{
@@ -59,18 +70,19 @@ export const logoutController = async (req, res, next)=>{
                   
                 }
           
-                res.json({ message: 'Logout exitoso' });
-              })
+                return httpResponse.Ok(res,'Logout exitoso')  });
+              }
            }
-        }
+        
     } catch (error) {
-        console.log(error)
+        next(error)
     }
 }
 
 export const githubResponse = async (req,res,next)=>{
     try {
         const{first_name, last_name, email, role, isGithub}= req.user;
+        user.last_connection = new Date();
         res.json({
             msg:'registro/login github ok',
             session: req.session,
@@ -88,30 +100,7 @@ export const githubResponse = async (req,res,next)=>{
 }
 export const changeRole = async( req, res, next) =>{
 try {
-    const { id }= req.params
-    function checkRequiredDocuments(){
-        const { id }= req.params
-        const requiredDocuments = ['identificacion' , 'comprobante de domicilio', 'comprobante de estado de cuenta'];
-        const userDocumentsPath = path.join(__dirname, `public/${id}/documents`);
-        console.log(userDocumentsPath)
-        const userDocumentsFiles = fs.readdirSync(userDocumentsPath);
-        const documentsTypes = userDocumentsFiles.map(filename=>{
-            return path.parse(filename).name;
-             
-        })
-        const checkDocuments = requiredDocuments.filter(doc =>!documentsTypes.includes(doc));
-        console.log(checkDocuments)
-        console.log(checkDocuments.length)
-        console.log(checkDocuments.length == 0)
-        return checkDocuments.length == 0
-
-
-
-    }
-    
-    if (checkRequiredDocuments() !== true){
-        throw new Error ('la decumentación requerida está incompleta')
-    }
+   
     const user = await userDao.getByid(req.session.passport.user)
     if (user.role == "user"){
         user.role='premium' 
@@ -129,13 +118,54 @@ try {
             await user.save()
             return httpResponse.Ok(res, 'el usuario ahora es user')
         }catch(error){
-            console.log(error)
+            httpResponse.Forbidden(res, 'no se pudo guardar en la base de datos')
         }
+    }   
+} catch (error) {
+   next(error)
+}
+}
+/**
+ * delete 
+ **/
+export const deleteInactiveController = async(req,res,next)=>{
+    try {
+      const users =await  userDao.deleteInactive()
+      
+      await mailDeletedUsers(users)
+      return httpResponse.Ok(res, 'los usuarios inactivos fueron borrados y los email enviados')
+    
+    } catch (error) {
+        next(error)
     }
+    
+}
+export const uploadFileController = async (req,res)=>{
 
    
-   
-} catch (error) {
-    console.log(error)
-}
+    try { const documentType = req.document_type
+       console.log(documentType + '::::::::documentType')
+       const {id}= req.params
+       const user = await userDao.getByid(id)
+ 
+       console.log(user + ':::::::::::user')
+       console.log(user.documents + '::::::::::user.documents')
+       user.documents.push(documentType)
+       console.log(user.documents + '::::::::::after push')
+       await user.save()
+      
+    } catch (error) {
+     console.log(error)  
+    }
+     res.status(200).send('archivo cargado exitosamente')
+  
+ } 
+export const createUserMockController = async (req,res, next) =>{
+    const { quantity }= req.query
+    try {
+        const response = await userDao.createUserMockDao(quantity);
+        return httpResponse.Ok(res, 'usuarios Faker creados')
+    } catch (error) {
+        next(error)
+    }
 }

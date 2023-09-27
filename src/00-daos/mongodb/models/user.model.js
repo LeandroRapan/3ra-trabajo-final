@@ -26,14 +26,14 @@ const usersSchema = new mongoose.Schema({
     type: String,
     default: 'user'
   },
-  documents:[
-    {name: String,
-    reference: String}
-  ],
+  documents:[String],
   last_connection: {
     type: Date
   }
 
 });
-
+usersSchema.pre('save', function (next) {
+  this.last_connection = new Date(); 
+  next();
+})
 export const userModel = mongoose.model('Users',usersSchema)

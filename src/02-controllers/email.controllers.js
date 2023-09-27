@@ -1,8 +1,8 @@
-import {  mailOption2,  Transportter } from "../01-services/email.service.js";
+import {  mailOption2,  Transporter } from "../01-services/email.service.js";
 
 export const sendMailEthereal = async( req,res)=>{
     try {
-        const response = await Transportter.sendMail(mailOption2);
+        const response = await Transporter.sendMail(mailOption2);
         console.log('email enviado');
         res.send(response)
     } catch (error) {
@@ -20,7 +20,7 @@ export const sendGmail = async(req,res)=>{
             subject: 'bienvenido/a',
             html: `<h1>hola ${name} te damos la bienvenida `
         }
-        const response = await Transportter.sendMail(gmailOptions);
+        const response = await Transporter.sendMail(gmailOptions);
         console.log('email enviado')
         res.json(response)
     } catch (error) {
