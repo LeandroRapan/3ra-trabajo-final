@@ -1,4 +1,4 @@
- import './db/database.js';
+import './db/database.js';
 import express from 'express';
 import morgan from 'morgan';
 import { errorHandler } from './middlewares/errorHandler.js';
@@ -7,11 +7,12 @@ import handlebars from 'express-handlebars';
 import { Server } from 'socket.io';
 import viewsRouter from './routes/views.router.js'
 import cartsRouter from './routes/carts.router.js'
- import usersRouter from './routes/user.routes.js'
+import usersRouter from './routes/user.routes.js'
 import { __dirname } from './utils.js';
 import cookieParser from 'cookie-parser';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
+import sessionConfig from './config/session.config.js';
 import { allMsgController} from './02-controllers/messages.controllers.js';
 import { allMsgService, createMsgService } from './01-services/messages.services.js';
 import passport from 'passport';
@@ -42,25 +43,7 @@ app.set('view engine', 'handlebars');
 app.set('views', __dirname+'/views');
 
 
-app.use(
-    session({
-      secret: 'sessionKey',
-      resave: false,
-      saveUninitialized: true,
-      cookie: {
-        maxAge: 60000
-      },
-      store: new MongoStore({
-        mongoUrl: 'mongodb+srv://admin:admin@cluster0.vcjyxe3.mongodb.net/coderhouse?retryWrites=true&w=majority',
-        // autoRemoveInterval: 1,
-        //autoRemove: "interval",
-        ttl: 10,
-        // crypto: {
-        //   secret: '1234',       //encripta los datos de la sesion
-        // },
-      }),
-    })
-  )
+app.use(session(sessionConfig) )
 app.use(passport.initialize())
 app.use(passport.session())
  app.use('/users',usersRouter)

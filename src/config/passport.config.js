@@ -28,7 +28,7 @@ const signup = async (req, email, password, done) => {
 const login =  async (req, email, password,done)=>{
     const user = {email, password};
     const userLogin = await userDao.loginUser(user);
-    console.log(userLogin + ':::::::::loginPassport')
+   
     if(!userLogin)return done(null,false);
     return done(null,userLogin)
 }
