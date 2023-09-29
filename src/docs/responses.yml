@@ -78,6 +78,128 @@ components:
           _id: 567857639
           cratedAt: 2023-08-29T16:10:40.724Z
           updatedat: 2023-08-29T16:10:40.724Z
+    users:
+      post:
+        type: object
+        properties:
+          msg:
+            type: string
+            example: registro correcto
+          session:
+            type: object
+            properties:
+              cookie:
+                type: object
+                properties:
+                  originalMaxAge:
+                    type: number
+                    example: 6000
+                  expires: 
+                    type: string
+                    example: fecha
+                  httpOnly:
+                    type: bolean
+                    example: true
+                  path: 
+                    type: "string"
+                    example: "/"
+          passport:
+            type: object
+            properties:
+              user:
+                type: string
+                example: 3939083094jfijdoj
+      postLog:
+        type: object
+        properties:
+          msg:
+            type: string
+            example: registro correcto
+          session:
+            type: object
+            properties:
+              cookie:
+                type: object
+                properties:
+                  originalMaxAge:
+                    type: number
+                    example: 6000
+                  expires: 
+                    type: string
+                    example: fecha
+                  httpOnly:
+                    type: bolean
+                    example: true
+                  path: 
+                    type: "string"
+                    example: "/"
+          passport:
+            type: object
+            properties:
+              user:
+                type: string
+                example: 3939083094jfijdoj
+          userData:
+            type: object
+            properties:
+              first_name:
+                type: string
+                example: alicia
+              last_name:
+                type: string
+                example: alanis
+              email:
+                type: string
+                example: hfhf@gog.com
+              age: 
+                type: number
+                example: 80
+              role:
+                type: premium
+      logout:
+        type: object
+        properties:
+          status:  
+            type: number
+            example: 200
+          message:
+            type: string
+            example: success
+          data:
+            type: string
+            example: logout exitoso
+      premium:
+        type: object
+        properties:
+          status:
+            type: number
+            example: 200
+          message:
+            type: string
+            example: success
+          data:
+            type: string
+            example: el usuario ahora es premium
+      document:
+        type: object
+        properties:
+          status:
+            type: number
+          message:
+            type: string
+          data:
+            type: string
+  examples:
+    users:
+      document:
+        success:
+          value:
+            status: 200
+            message: sucess
+            data: archivo cargado con exito
+        error:
+          value:
+            status: 400
+            message: error
+            data: no se pudo subir el archivo
 
-
-        

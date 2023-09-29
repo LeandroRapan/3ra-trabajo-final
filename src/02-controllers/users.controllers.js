@@ -140,24 +140,20 @@ export const deleteInactiveController = async(req,res,next)=>{
     }
     
 }
-export const uploadFileController = async (req,res)=>{
+export const uploadFileController = async (req,res,next)=>{
 
    
     try { const documentType = req.document_type
-       console.log(documentType + '::::::::documentType')
+       
        const {id}= req.params
        const user = await userDao.getByid(id)
- 
-       console.log(user + ':::::::::::user')
-       console.log(user.documents + '::::::::::user.documents')
        user.documents.push(documentType)
-       console.log(user.documents + '::::::::::after push')
        await user.save()
       
     } catch (error) {
-     console.log(error)  
+     next(error)  
     }
-     res.status(200).send('archivo cargado exitosamente')
+    return httpResponse.Ok(res, 'archivo cargado con exito')
   
  } 
 export const createUserMockController = async (req,res, next) =>{

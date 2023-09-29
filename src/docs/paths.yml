@@ -8,7 +8,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/parameters/schemas/NewOrUpdateProduct'
+              $ref: '#/components/schemas/NewOrUpdateProduct'
         required: true
       responses:
         '200':
@@ -240,7 +240,160 @@ paths:
               $ref: '#/components/schema/carts/Cart'  
         '500':
           description: error del servidor   
-       
+  /users:   
+    get:
+      tags:
+        - users
+      summary: "obtiene todos los usuarios"
+      responses: 
+        '200':
+          description: dto devuelve los usuarios sin datos sensibles
+        '500':
+          description: error del servidor  
+  /users/register:
+    post:
+      tags:
+        - users
+      summary: registra un usuario         
+      requestBody:
+        content:
+          application/json:
+            $ref: '#/components/schemas/UserReg'
+        required: true
+      responses:
+        '200':
+          description: se registro el usuario correctamente
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schema/users/post'
+        '401': 
+          description: unautoriced, por lo general se refiere a que el usuario ya existe
+        '500':
+          description: error de servidor
+  /users/login:
+    post:
+      tags:
+        - users
+      summary: logea un usuario
+      requestBody:
+        content:
+          application/json:
+            $ref: '#/components/schemas/Userlog'
+        required: true
+      responses:
+        '200':
+          description: se logeo al usuario
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schema/users/postLog'
+        '500':
+          description: error del servidor  
+  /users/logout:
+    post:
+      tags:
+        - users
+      summary: desloguea
+      responses:
+        '200':
+          description: usuario deslogueado
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schema/users/logout'
+  /users/register-github:
+    get:
+      tags:
+        - users
+      summary: registra un github
+  /users/profile-github:
+    get:
+      tags:
+        - users
+      summary: loguea con github?
+  /users/premium/:id:
+    patch:
+      tags:
+        - users
+      summary: cambia a premium el usuario si cuenta con los documentos cargados
+      security:
+        - passport: []  
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: id del usuario
+          schema:
+            type: string
+      responses:
+        '200':
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schema/users/premium'
+          description: el usuario cambio a premium o a user
+        '403':
+          description: la documentacion esta incompleta
+        '500':
+          description: error del servidor
+  users/:id/documents:
+    post:  
+      tags:
+        - users
+      summary: sube un archivo del usuario, detecta y ordena en carpetas segun el tipo
+      consumes:
+        - multipart/form-data
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: id del usuario
+          schema:
+           type: string
+        - in: formData
+          name: type
+          type: string
+          required: true
+          description: Tipo de archivo (required)
+        - in: formData
+          name: document_type
+          type: string
+          required: false  
+          description: Tipo de documento (optional)
+      responses:
+        '200':
+          description: Solicitud procesada con éxito 
+          content: 
+            application/json:
+              schema: 
+                $ref: '#/components/schema/users/document'
+              examples:
+                success:
+                 $ref: '#/components/examples/users/document/success' 
+        '400':
+          description: error al subir el archivo
+          content: 
+            application/json:
+              schema: 
+                $ref: '#/components/schema/users/document'
+              examples:
+                success:
+                 $ref: '#/components/examples/users/document/error' 
+        '500':
+          description: error del servidor
+  /users/:
+    delete:
+      tags:
+        - users
+      summary: borra a todos los usuarios inactivos desde hace 2 dias.
+      responses:
+        '200':
+          description: se borraron los usuarios con exito
+                      
+                
+      
+
 components:
   securityScheme:
     passport:

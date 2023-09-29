@@ -1,12 +1,13 @@
 import path from 'path'
 import { __dirname } from "../utils.js";
 import fs from 'fs';
+import { HttpResponse } from '../utils/http.response.js';
+
+const httpResponse = new HttpResponse()
 export function checkRequiredDocuments(req, res, next){
     const { id }= req.params
     
-    // if(!path.join(__dirname, `public/${id}/documents`)){
-    //     res.status(403).send('todavia no se adjunto ningun documento')
-    // }
+   
     try {
         const requiredDocuments = ['identificacion' , 'comprobante de domicilio', 'comprobante de estado de cuenta'];
         const userDocumentsPath = path.join(__dirname, `public/${id}/documents`);
@@ -17,7 +18,8 @@ export function checkRequiredDocuments(req, res, next){
         })
         const checkDocuments = requiredDocuments.filter(doc =>!documentsTypes.includes(doc));       
         if ( checkDocuments.length !== 0){
-        res.status(403).send('la documentacion esta incompleta')
+        return httpResponse.Forbidden(res, 'la documentacion esta incompleta')
+           
         } else next()  
     } catch (error) {
         throw new Error('no se ha subido todavia ningun documento')
