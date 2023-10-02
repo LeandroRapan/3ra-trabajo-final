@@ -9,6 +9,11 @@ export const getCartsController= async(req,res, next)=>{
         next(error)
     }
 }
+/**
+ * obtiene el carro por id
+ * @param {string} req.params id
+
+ */
 export const getCartByIdController = async(req,res, next)=>{
     try {
         const {id}= req.params
@@ -18,6 +23,11 @@ export const getCartByIdController = async(req,res, next)=>{
         next(error)
     }
 }
+/**
+ * crea el carrito
+ * @param {object} req.body en el caso de ya querer sumar un producto al carrito cuando se lo crea
+  
+ */
 export const createCartController= async(req,res, next)=>{
     try {
         const {obj} = req.body
@@ -28,6 +38,11 @@ export const createCartController= async(req,res, next)=>{
         next(error)
     }
 }
+/**
+ * modifica el carrito
+ * @param {string} req.params id
+ * @param {object} req.body
+ */
 export const updateCartController = async(req,res, next)=>{
     try {
         const {id} = req.params;
@@ -39,6 +54,12 @@ export const updateCartController = async(req,res, next)=>{
     }
 }
 
+/**
+ * borra del carrito identificado con id el producto con id correspondiente
+ * @param {string} req.params id del carrito id del producto 
+ * @param {*} res 
+ * @param {*} next 
+ */
 export const cartdeleteOneController = async ( req, res, next)=>{
     try {
         const {cid}= req.params;
@@ -50,6 +71,12 @@ export const cartdeleteOneController = async ( req, res, next)=>{
         
     }
 }
+/**
+ * funcion para modificar la cantidad especifica de productos en el carrito
+ * @param {string} req.params id del carrito y del producto
+ * @param {*} res 
+ * @param {*} next 
+ */
 export const updateProductQuantityController = async(req, res, next)=>{
     try {
         const {cid} = req.params;
@@ -65,6 +92,10 @@ export const updateProductQuantityController = async(req, res, next)=>{
         
     }
 }
+/**
+ * agrega el producto, si ya existe le suma al quantity sino lo pushea 
+ * @param {string} req.params id del carrito y id del producto
+ */
 export const addProductToCartController = async (req, res, next) =>{
     try {
         
@@ -74,9 +105,15 @@ export const addProductToCartController = async (req, res, next) =>{
         const addProd = await addProductToCartService(cid, pid);
         res.json(addProd)
     } catch (error) {
+        next(error)
         
     }
 }
+
+/**
+ * revisa la compra, genera errores si no queda suficiente stock del producto, si el carrito esta vacio, o si por algun motivo no encuentra el carrito(este seria el peor de los casos)
+ * @param {*} reqparams id del carrito  
+ */
 export const generateTktController = async(req, res, next)=>{
     try{
         const {cid}= req.params;
@@ -84,6 +121,6 @@ export const generateTktController = async(req, res, next)=>{
         res.json(tkt)
 
     }catch(error){
-        console.log(error)
+        next(error)
     }
 }

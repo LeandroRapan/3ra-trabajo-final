@@ -4,6 +4,14 @@ import fs from 'fs';
 import { HttpResponse } from '../utils/http.response.js';
 
 const httpResponse = new HttpResponse()
+/**
+ * va a buscar los archivos en la carpeta
+ * public/id/documents, salta error si la documentacion esta incompleta o si no hay ningun documento
+ * especificamente busca: 'identificacion' , 'comprobante de domicilio', 'comprobante de estado de cuenta'
+ * los archivos pueden tener una extension (ej: pdf)
+* @param {id} req req.params 
+
+ */
 export function checkRequiredDocuments(req, res, next){
     const { id }= req.params
     

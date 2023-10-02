@@ -7,7 +7,7 @@ import userResDto from "../utils/user.res.dto.js";
 import { mailDeletedUsers } from "../utils/Mailer/Mailer.js";
 const userDao = new UserDao();
 const httpResponse = new HttpResponse()
-
+/** busca todos los usuarios en mongo  */
 export const getAllUsersController = async (req, res, next) =>{
     try {
         const allUsers = await userDao.getAllUsers();
@@ -19,7 +19,7 @@ export const getAllUsersController = async (req, res, next) =>{
         next(error)
     }
 }
-
+/** solo muestra la respuesta */
 export const userRegisterController = async (req, res) => {
     try {      
           res.json({
@@ -31,7 +31,9 @@ export const userRegisterController = async (req, res) => {
      next(error)
     }
   }
-
+/** esta funcion recibe el Id del usuario desde passport
+ * genera una nueca last_connection y lo guarda en mongo
+ */
   export const userLoginController = async (req, res) => {
     try {
         
@@ -98,6 +100,7 @@ export const githubResponse = async (req,res,next)=>{
         next(error)
     }
 }
+/** esta funcion utiliza el req.session.passport.user, para comprobar si es premium o user */
 export const changeRole = async( req, res, next) =>{
 try {
    
@@ -109,7 +112,7 @@ try {
        
        return httpResponse.Ok(res, 'el usuario ahora es premium')
     } catch (error) {
-        console.log(error)
+        next(error)
     }
 
     }else{
@@ -126,7 +129,7 @@ try {
 }
 }
 /**
- * delete 
+ no utiliza parametros simplemente utilizando las fechas de login de usuarios los borra.
  **/
 export const deleteInactiveController = async(req,res,next)=>{
     try {
@@ -140,6 +143,15 @@ export const deleteInactiveController = async(req,res,next)=>{
     }
     
 }
+/**
+ * 
+ *  document_type, serviran para que el tipo de archivo quede registrado en el 
+ * usuario de mongo en forma de string. ejemplo estado_cuenta
+ 
+ * @param {document_type} req
+  
+  
+ */
 export const uploadFileController = async (req,res,next)=>{
 
    

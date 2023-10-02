@@ -12,6 +12,13 @@ import { isOwner } from "../middlewares/authVerification.js"
 import { HttpResponse } from "../utils/http.response.js"
 import productResDto from "../utils/product.res.dto.js"
 const httpResponse = new HttpResponse()
+
+/**
+ * obtiene todos los productos, pueden pasarsele parametros por query
+ * @param {page, limit, query, sort} req.query
+ * @param {*} res 
+ * @param {*} next 
+ */
 export const getAllProductsController = async (req, res, next) =>{
     try {
         const {page, limit, query, sort} = req.query
@@ -42,6 +49,11 @@ export const getAllProductsController = async (req, res, next) =>{
         next(error)
     }
 }
+/**
+ * obtiene el producto con el id indicado, devuelte respuesta don dto(en la carpeta utils)
+ * @param {id} req.params 
+ *  
+ */
 export const getProductByIdController= async (req, res, next) =>{
     try {
         const { id }= req.params;
@@ -52,6 +64,11 @@ export const getProductByIdController= async (req, res, next) =>{
         next(error)
     }
 }
+/**
+ * crea el producto
+ * @param {name, description, price, quantity, owner} req name, description,price, quantity, owner
+
+ */
 export const createProductController= async (req, res, next) =>{
     try {
         const { name, description, price, quantity, owner } = req.body
@@ -72,6 +89,10 @@ export const createProductController= async (req, res, next) =>{
         
     }
 }
+/**
+ * 
+ *toma el id y el objeto con las modificaciones a un producto existente devuelve respuesta con dto
+ */
 export const updateProductController = async (req, res, next) =>{
     try {
         const { id } = req.params
@@ -89,6 +110,7 @@ export const updateProductController = async (req, res, next) =>{
         next(error)
     }
 }
+/** borra el producto tomando el id de la ruta */
 export const deleteProductController = async (req, res, next) =>{
     try {
         const { id }= req.params;

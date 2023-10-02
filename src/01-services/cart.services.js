@@ -73,6 +73,6 @@ export const generateTktService = async(cartId)=>{
         const tkt = await cDao.generateTkt(cartId);
         return tkt
     } catch (error) {
-        console.log(error)
+        throw error
     }
 }

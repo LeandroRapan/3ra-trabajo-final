@@ -18,7 +18,7 @@ router.get('/register-github', passport.authenticate('github', {scope:['user:ema
 router.get('/profile-github', passport.authenticate('github', {scope:['user:email']}), githubResponse)
 router.patch('/premium/:id',checkRequiredDocuments, changeRole)
 router.post('/:id/documents', upload.single('file'), uploadFileController)
- router.delete('/', deleteInactiveController)
- router.post('/mockingusers', createUserMockController)
+router.delete('/', deleteInactiveController)
+router.post('/mockingusers', createUserMockController)
 
 export default router

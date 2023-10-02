@@ -9,5 +9,5 @@ try {
     
     console.log('CONECTADO A MONGO ')
 } catch (error) {
-    console.log(error)
+    throw new Error(error)
 }

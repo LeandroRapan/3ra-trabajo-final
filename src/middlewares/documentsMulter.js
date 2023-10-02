@@ -2,8 +2,21 @@
     import { __dirname } from "../utils.js"
     import fs from 'fs'
     import path from "path"
-import { userModel } from "../00-daos/mongodb/models/user.model.js"
+/**
+ *  @param {type} req
+ * @param {document_type} req
+ * los type validos para que la funcion ordene en carpetas los tipos de documentos son:
+ * profile, product, document.
+ * los document_type por su parte son:
+ * identificacion, estado_cuenta, certificado_domicilio
+*/
+
+
+    import { userModel } from "../00-daos/mongodb/models/user.model.js"
     const userMongo = new userModel()
+
+
+
     const storage = multer.diskStorage({
         destination: function (req, file, cb) {
             const { type }= req.body;
@@ -53,6 +66,14 @@ import { userModel } from "../00-daos/mongodb/models/user.model.js"
        
         }
     })
-    
+
+        /**
+/**
+ * Ordena documentos en carpetas según su tipo y documento_type.
+ *
+ * @param {Object} req - Objeto de solicitud HTTP.
+ * @param {string} type - Tipo válido para organizar los documentos (profile, product, document).
+ * @param {string} document_type - Tipo de documento (identificacion, estado_cuenta, certificado_domicilio). Es no requerido, solo si se opera sobre un documento.
+ */
     export  const upload = multer({ storage: storage })
 
