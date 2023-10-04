@@ -1,5 +1,6 @@
 import { cartModel } from "./models/Cart.model.js";
 import { productsModel } from "./models/products.model.js";
+const pModel = new productsModel();
 export default class CartDao {
   async getCarts() {
     try {
@@ -13,9 +14,15 @@ export default class CartDao {
   async getCartById(id) {
     try {
       const cart = await cartModel.findById(id);
+      console.log("hola");
+      // if(!cart){ const error = new Error('carrito no encontrado')
+      //   error.statusCode= 404
+      // throw error}
       return cart;
     } catch (error) {
-      throw new Error("error obteniendo carrito por id");
+      error = new Error("carrito no encontrado");
+      error.statusCode = 400;
+      throw error;
     }
   }
   async createCart(obj) {
@@ -57,12 +64,14 @@ export default class CartDao {
     try {
       const cart = await cartModel.findById(cid);
       if (!cart) throw new Error("DAO: ni idea del carro ese");
-      console.log(pid);
-      const productInCart = cart.products.find((p) => p._id == pid);
+
+      const productInCart = cart.products.filter((p) => p.id !== pid);
+
       if (!productInCart)
         throw new Error("DAO: encontré el carrito pero eso no estaba");
-      const upProd = await productsModel.updateProduct(pid, { quantity });
-      if (!upProd) throw new Error("cuantos eran?");
+      productInCart[0].quantity = quantity;
+      await cart.save();
+
       return cart;
     } catch (error) {
       throw error;
@@ -90,23 +99,21 @@ export default class CartDao {
 
   async generateTkt(cid) {
     try {
-      
-      
       const cart = await cartModel.findById(cid);
       if (!cart) {
         throw new Error("carrito no encontrado.");
       }
 
       const prodInCart = cart.products;
-      
-      if(prodInCart.length=== 0){
-        const error = new Error('El carrito está vacío');
+
+      if (prodInCart.length === 0) {
+        const error = new Error("El carrito está vacío");
         error.statusCode = 400;
         throw error;
       }
       const tktProductIds = [];
       let totalPrice = 0;
-     
+
       for (const products of prodInCart) {
         const prodId = products.id;
         const prodQ = products.quantity;
@@ -126,11 +133,12 @@ export default class CartDao {
           );
         }
 
-        const indexToRemove = cart.products.findIndex(product => product.id === prodId);
+        const indexToRemove = cart.products.findIndex(
+          (product) => product.id === prodId
+        );
 
         if (indexToRemove !== -1) {
-           
-            cart.products.splice(indexToRemove, 1);
+          cart.products.splice(indexToRemove, 1);
         }
         await cart.save();
         const tkt = {

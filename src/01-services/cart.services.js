@@ -50,9 +50,10 @@ export const  cartDeleteOneService = async (cid, pid)=>{
 export const  updateProductQuantityService = async (cid, pid, quantity)=>{
     try {
         const udtQ = await cDao.updateProductQuantity(cid,pid, quantity);
+       
         return udtQ;
     } catch (error) {
-        
+        throw error
     }
 }
 export const addProductToCartService = async (cartId, prodId)=>{

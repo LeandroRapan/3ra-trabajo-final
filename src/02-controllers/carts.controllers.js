@@ -17,7 +17,10 @@ export const getCartsController= async(req,res, next)=>{
 export const getCartByIdController = async(req,res, next)=>{
     try {
         const {id}= req.params
-        const doc= await getCartByIdServide(id)
+        const doc= await getCartByIdServide(id);
+         if(!doc){ const error = new Error('carrito no encontrado')
+         error.statusCode= 404
+         throw error}
         res.json(doc)
     } catch (error) {
         next(error)
@@ -82,8 +85,10 @@ export const updateProductQuantityController = async(req, res, next)=>{
         const {cid} = req.params;
         const {pid} =req.params;
         
-        const quantity = req.body;
-        const upd= updateProductQuantityService(cid,pid, quantity);
+        const {quantity} = req.body;
+        
+        const upd= await updateProductQuantityService(cid,pid, quantity);
+        
         res.json(upd)
 
         

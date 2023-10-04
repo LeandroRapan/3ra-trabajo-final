@@ -10,8 +10,12 @@ import { mailDeletedPremiumProduct } from "../utils/Mailer/Mailer.js";
 const pModel = new ProductsDaoMongoDB()
 const userDao = new UserDao()
 export async function isPremiumProduct (req, res, next) {
-   const {id} = req.params   
-   const product = await pModel.getProductById(id);
+ 
+  const {id} = req.params   
+  try {
+    console.log('ïd::::::'+ id)
+    const product = await pModel.getProductById(id);
+    console.log('produc::::' + product)
      if(product.owner !== 'admin')  {
       const user = await userDao.getByid(product.owner)
       if (user.role== 'premium'){
@@ -25,4 +29,8 @@ export async function isPremiumProduct (req, res, next) {
    }
 
 
+  } catch (error) {
+    console.log(error)
+  }
+   
 }

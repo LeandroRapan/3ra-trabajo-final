@@ -11,6 +11,7 @@ import {
 import { isOwner } from "../middlewares/authVerification.js"
 import { HttpResponse } from "../utils/http.response.js"
 import productResDto from "../utils/product.res.dto.js"
+import passport from "passport"
 const httpResponse = new HttpResponse()
 
 /**
@@ -71,7 +72,8 @@ export const getProductByIdController= async (req, res, next) =>{
  */
 export const createProductController= async (req, res, next) =>{
     try {
-        const { name, description, price, quantity, owner } = req.body
+        const { name, description, price, quantity, owner } = req.body;
+        // const owner =req.user._id.toString()
         if(name==undefined || description==undefined ||price==undefined || quantity ==undefined){throw new Error('los datos estan incompletos')}
         const newProduct = await createService({
             name,
@@ -96,13 +98,13 @@ export const createProductController= async (req, res, next) =>{
 export const updateProductController = async (req, res, next) =>{
     try {
         const { id } = req.params
-        const { name, description, price, stock} = req.body;
+        const { name, description, price, quantity} = req.body;
         let doc = await  getByIdService(id);
         
-        isOwner(doc.owner)
+        // isOwner(doc.owner)
         const update = await updateService(
             id,
-            { name, description, price, stock }
+            { name, description, price, quantity }
         )
         let resDto = new productResDto(update) 
         res.json(resDto)
@@ -113,9 +115,10 @@ export const updateProductController = async (req, res, next) =>{
 /** borra el producto tomando el id de la ruta */
 export const deleteProductController = async (req, res, next) =>{
     try {
+        console.log('llego al controller')
         const { id }= req.params;
         await deleteService(id);
-        res.send('producto borrado')
+        return httpResponse.ok(res,'producto borrado')
     } catch (error) {
         next(error)
     }
